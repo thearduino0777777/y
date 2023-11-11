@@ -1,0 +1,29 @@
+
+name: CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download
+    
+      run: sudo snap install ngrok
+          
+    
+    - name: Extract
+    
+      run: curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc 
+    - run: sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+    - run: echo "deb https://ngrok-agent.s3.amazonaws.com buster main"
+    - run: sudo tee /etc/apt/sources.list.d/ngrok.list 
+    - run: sudo snap install ngrok
+    - run: ngrok config add-authtoken 2Y1GgY6GVGdrUuuIzu7zCeZBXyA_vFtpWzHFGqiezPRd7pxh
+
+  
+    - name: Create Tunnel
+
+      run: ngrok tcp 22
